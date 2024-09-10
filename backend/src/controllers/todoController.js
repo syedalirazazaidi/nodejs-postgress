@@ -42,9 +42,9 @@ exports.createTodo = createTodo;
 // Update a todo
 const updateTodo = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const { id } = req.params;
-    const { completed } = req.body;
+    const { title } = req.body;
     try {
-        const result = yield db_1.default.query('UPDATE todos SET completed = $1 WHERE id = $2 RETURNING *', [completed, id]);
+        const result = yield db_1.default.query('UPDATE todos SET title = $1 WHERE id = $2 RETURNING *', [title, id]);
         if (result.rows.length === 0) {
             res.status(404).json({ error: 'Todo not found' });
             return;
