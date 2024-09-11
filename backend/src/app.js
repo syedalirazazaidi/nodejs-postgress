@@ -8,7 +8,11 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const express_1 = __importDefault(require("express"));
 const body_parser_1 = __importDefault(require("body-parser"));
 const todos_1 = __importDefault(require("./routes/todos"));
+const categories_1 = __importDefault(require("./routes/categoryRoute"));
+
 const app = (0, express_1.default)();
 app.use(body_parser_1.default.json());
 app.use("/api/todos", todos_1.default);
+app.use("/api/categories", categories_1.default);
+
 exports.default = app;
