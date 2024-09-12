@@ -7,10 +7,27 @@ export const getCategories = async (
 ): Promise<void> => {
   try {
     const result = await pool.query("SELECT * FROM categories ORDER BY id");
-    
+
     res.json(result.rows);
   } catch (error) {
     console.error(error);
     res.status(500).json({ error: "Database error :" });
+  }
+};
+
+export const createCategories = async (
+  req: Request,
+  res: Response
+): Promise<void> => {
+  const { name, description } = req.body;
+  try {
+    const result = await pool.query(
+      "INSERT INTO categories (name, description) VALUES ($1, $2) RETURNING *",
+      [name, description]
+    );
+    res.status(201).json(result.rows[0]);
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ error: "Database error" });
   }
 };
