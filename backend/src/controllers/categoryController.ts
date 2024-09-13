@@ -6,7 +6,7 @@ export const getCategories = async (
   res: Response
 ): Promise<void> => {
   try {
-    const result = await pool.query("SELECT * FROM categories ORDER BY id");
+    const result = await pool.query("SELECT * FROM alicategories ORDER BY category_id");
 
     res.json(result.rows);
   } catch (error) {
@@ -19,11 +19,11 @@ export const createCategories = async (
   req: Request,
   res: Response
 ): Promise<void> => {
-  const { name, description } = req.body;
+  const { category_name } = req.body;
   try {
     const result = await pool.query(
-      "INSERT INTO categories (name, description) VALUES ($1, $2) RETURNING *",
-      [name, description]
+      "INSERT INTO alicategories (category_name) VALUES ($1) RETURNING *",
+      [category_name]
     );
     res.status(201).json(result.rows[0]);
   } catch (error) {
