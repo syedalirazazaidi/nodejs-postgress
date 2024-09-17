@@ -1,18 +1,51 @@
-import { useState } from 'react'
+import { useState } from "react";
+import {
+  BrowserRouter,
+  Outlet,
+  Navigate,
+  Route,
+  Routes,
+} from "react-router-dom";
+import "./App.css";
+import SignIn from "./pages/auth/signIn";
+import Transactions from "./pages/transactions";
+import SignUp from "./pages/auth/signUp";
+import Overview from "./pages/overview";
+import Dashboard from "./pages/dashboard";
+import Setting from "./pages/setting";
 
-import './App.css'
-import { Button } from './components/ui/button'
+const PrivateRoute = () => {
+  const user = null;
+  // const { isAuthenticated } = useAuth();
+
+  return !user ? <Outlet /> : <Navigate to="/" />;
+};
 
 function App() {
-  const [count, setCount] = useState(0)
+  const [count, setCount] = useState(0);
 
   return (
-    <h1 className="text-3xl bg-green-900 ">
-      Hello world! this is 
-      <Button variant={'destructive'}>Click Me</Button>
+    <>
+      <Routes>
+        {/* Public Routes */}
+        <Route path="/signIn" element={<SignIn />} />
+        <Route path="/signUp" element={<SignUp />} />
 
-    </h1>
-  )
+        {/* Private Routes */}
+        <Route element={<PrivateRoute />}>
+          <Route path="/overview" element={<Dashboard />} />
+          <Route path="/transactions" element={<Transactions />} />
+          <Route path="/setting" element={<Setting />} />
+
+          {/* Redirect root to /overview if authenticated */}
+          <Route path="/" element={<Navigate to="/overview" />} />
+        </Route>
+
+        {/* Catch-all route for 404 Not Found */}
+        <Route path="*" element={<Navigate to="/signIn" />} />
+      </Routes>
+    </>
+  );
 }
 
-export default App
+export default App;
