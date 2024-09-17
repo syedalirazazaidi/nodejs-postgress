@@ -18,7 +18,7 @@ import useAuthStore from "./store/authStore";
 const PrivateRoute: React.FC = () => {
   // Access the authentication state from Zustand
   const { isAuthenticated } = useAuthStore();
-
+  
   // If not authenticated, redirect to sign-in page
   return isAuthenticated ? <Outlet /> : <Navigate to="/signIn" />;
 };
@@ -29,8 +29,8 @@ function App() {
     <>
       <Routes>
         {/* Public Routes */}
-        <Route path="/signIn" element={<SignIn />} />
-        <Route path="/signUp" element={<SignUp />} />
+        <Route path="/sign-in" element={<SignIn />} />
+        <Route path="/sign-up" element={<SignUp />} />
 
         {/* Private Routes */}
         <Route element={<PrivateRoute />}>
