@@ -6,7 +6,6 @@ import { SignInFormValues, signInSchema } from "@/validation/signInSchema";
 export default function SignIn() {
   const {
     control,
-    
     handleSubmit,
     formState: { errors },
   } = useForm<SignInFormValues>({
@@ -39,46 +38,46 @@ export default function SignIn() {
                     Your email
                   </label>
                   <Controller
-                  name="email"
-                  control={control}
-                  render={({ field }) => (
-                    <input
-                      type="email"
-                      id="email"
-                      {...field}
-                      className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                      placeholder="name@company.com"
-                    />
+                    name="email"
+                    control={control}
+                    render={({ field }) => (
+                      <input
+                        type="email"
+                        id="email"
+                        {...field}
+                        className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                        placeholder="name@company.com"
+                      />
+                    )}
+                  />
+                  {errors.email && (
+                    <p className="text-red-500">{errors.email.message}</p>
                   )}
-                />
-                {errors.email && (
-                  <p className="text-red-500">{errors.email.message}</p>
-                )}
                 </div>
                 <div>
-                <label
-                  htmlFor="password"
-                  className="flex items-start mb-2 text-sm font-medium text-gray-900 dark:text-white"
-                >
-                  Password
-                </label>
-                <Controller
-                  name="password"
-                  control={control}
-                  render={({ field }) => (
-                    <input
-                      type="password"
-                      id="password"
-                      {...field}
-                      className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                      placeholder="••••••••"
-                    />
+                  <label
+                    htmlFor="password"
+                    className="flex items-start mb-2 text-sm font-medium text-gray-900 dark:text-white"
+                  >
+                    Password
+                  </label>
+                  <Controller
+                    name="password"
+                    control={control}
+                    render={({ field }) => (
+                      <input
+                        type="password"
+                        id="password"
+                        {...field}
+                        className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                        placeholder="••••••••"
+                      />
+                    )}
+                  />
+                  {errors.password && (
+                    <p className="text-red-500">{errors.password.message}</p>
                   )}
-                />
-                {errors.password && (
-                  <p className="text-red-500">{errors.password.message}</p>
-                )}
-              </div>
+                </div>
                 <div className="flex items-center justify-between">
                   <div className="flex items-start">
                     <div className="flex items-center h-5">
