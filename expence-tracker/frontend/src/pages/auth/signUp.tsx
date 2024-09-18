@@ -1,17 +1,47 @@
-import React from 'react';
-import { useForm, Controller } from 'react-hook-form';
-import { zodResolver } from '@hookform/resolvers/zod';
-import { SignUpFormValues, signUpSchema } from '@/validation/signUpSchema';
+import React from "react";
+import { useForm, Controller } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { SignUpFormValues, signUpSchema } from "@/validation/signUpSchema";
+import axios from "axios";
+import { useNavigate } from "react-router-dom";
+import useAuthStore from "@/store/authStore";
 
+// const fetchData = async () => {
+//   const { data } = await axios.get('https://jsonplaceholder.typicode.com/todos/1');
+//   return data;
+// };
 const SignUp: React.FC = () => {
-  const { control, handleSubmit, formState: { errors } } = useForm<SignUpFormValues>({
+  const navigate = useNavigate();
+  const { isAuthenticated, login } = useAuthStore();
+  // const { data, error, isLoading } = useQuery({
+  //   queryKey: ['todo'],
+  //   queryFn: fetchData,
+  // });
+  // if (isLoading) return <div>Loading...</div>;
+
+  // console.log(data,"DATA");
+
+  const {
+    control,
+    handleSubmit,
+    formState: { errors },
+  } = useForm<SignUpFormValues>({
     resolver: zodResolver(signUpSchema),
   });
 
   const onSubmit = (data: SignUpFormValues) => {
-    // Handle form submission
+    // Simulate a sign-up API call and login the user
     console.log(data);
-    // Add your sign-up logic here
+
+    // Assuming sign-up is successful, log in the user
+    login();
+
+    // Check authentication and navigate
+    if (isAuthenticated) {
+      navigate("/overview"); // Redirect authenticated users
+    } else {
+      navigate("/sign-in"); // Redirect non-authenticated users to sign-in
+    }
   };
 
   return (
@@ -22,7 +52,10 @@ const SignUp: React.FC = () => {
             <h1 className="text-xl font-bold leading-tight tracking-tight text-gray-900 md:text-2xl dark:text-white">
               Sign-Up
             </h1>
-            <form className="space-y-4 md:space-y-6" onSubmit={handleSubmit(onSubmit)}>
+            <form
+              className="space-y-4 md:space-y-6"
+              onSubmit={handleSubmit(onSubmit)}
+            >
               <div>
                 <label
                   htmlFor="email"
@@ -43,7 +76,9 @@ const SignUp: React.FC = () => {
                     />
                   )}
                 />
-                {errors.email && <p className="text-red-500">{errors.email.message}</p>}
+                {errors.email && (
+                  <p className="text-red-500">{errors.email.message}</p>
+                )}
               </div>
 
               <div>
@@ -66,7 +101,9 @@ const SignUp: React.FC = () => {
                     />
                   )}
                 />
-                {errors.password && <p className="text-red-500">{errors.password.message}</p>}
+                {errors.password && (
+                  <p className="text-red-500">{errors.password.message}</p>
+                )}
               </div>
 
               <div>
@@ -89,20 +126,24 @@ const SignUp: React.FC = () => {
                     />
                   )}
                 />
-                {errors.confirmPassword && <p className="text-red-500">{errors.confirmPassword.message}</p>}
+                {errors.confirmPassword && (
+                  <p className="text-red-500">
+                    {errors.confirmPassword.message}
+                  </p>
+                )}
               </div>
 
               <button
                 type="submit"
                 className="w-full bg-slate-200 text-[#111827] bg-primary-600 hover:bg-primary-700 focus:ring-4 focus:outline-none focus:ring-primary-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-primary-600 dark:hover:bg-primary-700 dark:focus:ring-primary-800"
               >
-              Submit
+                Sign up
               </button>
 
               <p className="text-sm font-light text-gray-500 dark:text-gray-400">
                 Already have an account?{" "}
                 <a
-                  href="/signIn"
+                  href="/sign-in"
                   className="font-medium text-primary-600 hover:underline dark:text-primary-500"
                 >
                   Login here
