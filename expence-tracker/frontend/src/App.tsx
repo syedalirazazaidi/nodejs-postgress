@@ -29,8 +29,8 @@ function App() {
     <>
       <Routes>
         {/* Public Routes */}
-        <Route path="/sign-in" element={<SignIn />} />
-        <Route path="/sign-up" element={<SignUp />} />
+        <Route path="/signin" element={<SignIn />} />
+        <Route path="/signup" element={<SignUp />} />
 
         {/* Private Routes */}
         <Route element={<PrivateRoute />}>
@@ -43,7 +43,7 @@ function App() {
         </Route>
 
         {/* Catch-all route for 404 Not Found */}
-        <Route path="*" element={<Navigate to="/signIn" />} />
+        <Route path="*" element={<Navigate to="/signin" />} />
       </Routes>
     </>
   );

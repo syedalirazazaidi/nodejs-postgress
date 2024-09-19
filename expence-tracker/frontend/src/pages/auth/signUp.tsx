@@ -29,19 +29,42 @@ const SignUp: React.FC = () => {
     resolver: zodResolver(signUpSchema),
   });
 
-  const onSubmit = (data: SignUpFormValues) => {
-    // Simulate a sign-up API call and login the user
-    console.log(data);
+  const onSubmit = async (data: SignUpFormValues) => {
+    try {
+      // Send user sign-up data to the backend
+      const response = await axios.post('http://localhost:3000/api/signup', data); // Update with your backend URL
+  
 
-    // Assuming sign-up is successful, log in the user
-    login();
-
-    // Check authentication and navigate
-    if (isAuthenticated) {
-      navigate("/overview"); // Redirect authenticated users
-    } else {
-      navigate("/sign-in"); // Redirect non-authenticated users to sign-in
+      console.log(response,":LL");
+      
+      // Check if sign-up was successful
+      if (response.status === 200) {
+        const result = response.data;
+  
+        if (result.isAuthenticated) {
+          // Set user authentication state in Zustand
+          login();
+  
+          // Redirect to the overview/dashboard page
+          navigate("/overview");
+        }
+      }
+    } catch (error) {
+      // Handle any errors
+      if (axios.isAxiosError(error)) {
+        console.error("Backend error:", error.response?.data?.message || "Sign-up failed");
+      } else {
+        console.error("An unexpected error occurred:", error);
+      }
     }
+
+    // login();
+
+    // if (isAuthenticated) {
+    //   navigate("/overview");
+    // } else {
+    //   navigate("/sign-in");
+    // }
   };
 
   return (
@@ -143,7 +166,7 @@ const SignUp: React.FC = () => {
               <p className="text-sm font-light text-gray-500 dark:text-gray-400">
                 Already have an account?{" "}
                 <a
-                  href="/sign-in"
+                  href="/signin"
                   className="font-medium text-primary-600 hover:underline dark:text-primary-500"
                 >
                   Login here
