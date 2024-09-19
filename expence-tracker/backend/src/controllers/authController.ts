@@ -2,8 +2,11 @@ import pool from "../config/db";
 import bcrypt from "bcrypt";
 import { Request, Response } from "express";
 import asyncHandler from "express-async-handler";
+import jwt from "jsonwebtoken";
 
 // Sign up user controller
+
+const JWT_SECRET = process.env.JWT_SECRET || "your_secret_key";
 export const signUpUser = asyncHandler(
   async (req: Request, res: Response): Promise<any> => {
     try {
@@ -51,24 +54,33 @@ export const signInUser = async (req: Request, res: Response): Promise<any> => {
   const { email, password } = req.body;
 
   try {
-    const user = await pool.query("SELECT * FROM users WHERE email = $1", [
-      email,
-    ]);
-
-    if (user.rows.length === 0) {
-      return res.status(400).json({ message: "Invalid credentials" });
-    }
-
-    const isValidPassword = await bcrypt.compare(
-      password,
-      user.rows[0].password
+    const existingUser = await pool.query(
+      "SELECT * FROM users WHERE email = $1",
+      [email]
     );
 
-    if (!isValidPassword) {
-      return res.status(400).json({ message: "Invalid credentials" });
+    if (existingUser.rows.length === 0) {
+      return res.status(400).json({ message: "Invalid email or password" });
     }
 
-    res.status(200).json({ message: "Login successful", user: user.rows[0] });
+    const user = existingUser.rows[0];
+
+    const isMatch = await bcrypt.compare(password, user.password);
+    if (!isMatch) {
+      return res.status(400).json({ message: "Invalid email or password" });
+    }
+
+    const token = jwt.sign(
+      { userId: user.id, email: user.email }, // Payload data
+      JWT_SECRET, // Secret key
+      { expiresIn: "1h" } // Token expiry (adjust as needed)
+    );
+
+    res.status(200).json({
+      message: "Login successful",
+      token, // JWT token
+      user: { id: user.id, email: user.email }, // Optional: user data for client-side use
+    });
   } catch (err) {
     console.error(err);
     res.status(500).json({ message: "Server error" });
