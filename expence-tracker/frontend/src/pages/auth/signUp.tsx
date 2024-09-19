@@ -12,7 +12,7 @@ import useAuthStore from "@/store/authStore";
 // };
 const SignUp: React.FC = () => {
   const navigate = useNavigate();
-  const { isAuthenticated, login } = useAuthStore();
+  // const { isAuthenticated, login } = useAuthStore();
   // const { data, error, isLoading } = useQuery({
   //   queryKey: ['todo'],
   //   queryFn: fetchData,
@@ -31,41 +31,29 @@ const SignUp: React.FC = () => {
 
   const onSubmit = async (data: SignUpFormValues) => {
     try {
-      // Send user sign-up data to the backend
-      const response = await axios.post('http://localhost:3000/api/signup', data); // Update with your backend URL
-  
+      const response = await axios.post(
+        "http://localhost:3000/api/signup",
+        data
+      );
 
-      console.log(response,":LL");
-      
-      // Check if sign-up was successful
-      if (response.status === 200) {
-        const result = response.data;
-  
-        if (result.isAuthenticated) {
-          // Set user authentication state in Zustand
-          login();
-  
-          // Redirect to the overview/dashboard page
-          navigate("/overview");
-        }
-      }
-    } catch (error) {
-      // Handle any errors
-      if (axios.isAxiosError(error)) {
-        console.error("Backend error:", error.response?.data?.message || "Sign-up failed");
+      alert("Signup successful");
+    } catch (error: any) {
+      if (error.response && error.response.status === 400) {
+        alert(error.response.data.message); // Display error message from backend
       } else {
-        console.error("An unexpected error occurred:", error);
+        console.error("Signup error", error);
+        alert("An error occurred during signup");
       }
     }
-
-    // login();
-
-    // if (isAuthenticated) {
-    //   navigate("/overview");
-    // } else {
-    //   navigate("/sign-in");
-    // }
   };
+
+  // login();
+
+  // if (isAuthenticated) {
+  //   navigate("/overview");
+  // } else {
+  //   navigate("/sign-in");
+  // }
 
   return (
     <section>
@@ -89,6 +77,7 @@ const SignUp: React.FC = () => {
                 <Controller
                   name="email"
                   control={control}
+                  defaultValue=""
                   render={({ field }) => (
                     <input
                       type="email"
@@ -114,6 +103,7 @@ const SignUp: React.FC = () => {
                 <Controller
                   name="password"
                   control={control}
+                  defaultValue=""
                   render={({ field }) => (
                     <input
                       type="password"
@@ -139,6 +129,7 @@ const SignUp: React.FC = () => {
                 <Controller
                   name="confirmPassword"
                   control={control}
+                  defaultValue=""
                   render={({ field }) => (
                     <input
                       type="password"
@@ -166,7 +157,7 @@ const SignUp: React.FC = () => {
               <p className="text-sm font-light text-gray-500 dark:text-gray-400">
                 Already have an account?{" "}
                 <a
-                  href="/signin"
+                  href="/sign-in"
                   className="font-medium text-primary-600 hover:underline dark:text-primary-500"
                 >
                   Login here

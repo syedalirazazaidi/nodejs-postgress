@@ -2,6 +2,7 @@ import React from "react";
 import { useForm, Controller } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { SignInFormValues, signInSchema } from "@/validation/signInSchema";
+import axios from "axios";
 
 export default function SignIn() {
   const {
@@ -12,9 +13,24 @@ export default function SignIn() {
     resolver: zodResolver(signInSchema),
   });
 
-  const onSubmit = (data: SignInFormValues) => {
-    console.log("Form submitted:", data);
-    // Implement sign-in logic here
+  const onSubmit = async (data: SignInFormValues) => {
+    try {
+      const response = await axios.post(
+        "http://localhost:3000/api/signin",
+        data
+      );
+      alert("Signin successful");
+      // Store the token in localStorage or context if needed
+      localStorage.setItem("token", response.data.token);
+      // Redirect or perform actions after successful sign-in
+    } catch (error: any) {
+      if (error.response && error.response.status === 400) {
+        alert(error.response.data.message); // Display error message from backend
+      } else {
+        console.error("Signin error", error);
+        alert("An error occurred during signin");
+      }
+    }
   };
 
   return (

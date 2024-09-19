@@ -1,13 +1,13 @@
 {
+  "files": [],
+  "references": [
+    { "path": "./tsconfig.app.json" },
+    { "path": "./tsconfig.node.json" }
+  ],
   "compilerOptions": {
-    "target": "ES6",
-    "module": "CommonJS",
-    "strict": true,
-    "esModuleInterop": true,
-    "outDir": "./dist",  // Where compiled JS will be placed
-    "rootDir": "./src",  // Where TypeScript source files are
-    "skipLibCheck": true
-  },
-  "include": ["src/**/*.ts"],  // Make sure it compiles .ts files from src folder
-  "exclude": ["node_modules"]
+    "baseUrl": ".",
+    "paths": {
+      "@/*": ["./src/*"]
+    }
+  }
 }
