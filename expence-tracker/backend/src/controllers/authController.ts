@@ -1,11 +1,7 @@
 import pool from "../config/db";
 import bcrypt from "bcrypt";
-import { promises } from "dns";
 import { Request, Response } from "express";
-
 import asyncHandler from "express-async-handler";
-
-// PostgreSQL connection pool
 
 // Sign up user controller
 export const signUpUser = asyncHandler(
