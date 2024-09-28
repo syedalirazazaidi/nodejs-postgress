@@ -14,11 +14,16 @@ export default function SignIn() {
   });
 
   const onSubmit = async (data: SignInFormValues) => {
+    console.log(data, "DATA");
+
     try {
       const response = await axios.post(
         "http://localhost:3000/api/signin",
         data
       );
+
+      console.log(response);
+
       alert("Signin successful");
       // Store the token in localStorage or context if needed
       localStorage.setItem("token", response.data.token);

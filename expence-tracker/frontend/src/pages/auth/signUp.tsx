@@ -30,11 +30,15 @@ const SignUp: React.FC = () => {
   });
 
   const onSubmit = async (data: SignUpFormValues) => {
+    const signUpdata = {
+      email: data.email,
+      password: data.password,
+    };
+    console.log(signUpdata);
+
     try {
-      const response = await axios.post(
-        "http://localhost:3000/api/signup",
-        data
-      );
+      const response = await axios.post("/api/signup", signUpdata); // No need for full URL
+      console.log(response.data);
 
       alert("Signup successful");
     } catch (error: any) {
