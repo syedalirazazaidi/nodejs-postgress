@@ -3,7 +3,8 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { SignInFormValues, signInSchema } from "@/validation/signInSchema";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
-
+import toast, { Toaster } from "react-hot-toast";
+import "react-toastify/dist/ReactToastify.css";
 export default function SignIn() {
   const navigate = useNavigate();
 
@@ -19,18 +20,17 @@ export default function SignIn() {
     try {
       const response = await axios.post("/api/signin", data);
 
-      console.log(response);
+      toast.success("Signin successful!");
 
-      alert("Signin successful");
       localStorage.setItem("token", response.data.token);
       localStorage.setItem("user", response.data.user.email);
       navigate("/overview");
     } catch (error: any) {
       if (error.response && error.response.status === 400) {
-        alert(error.response.data.message); // Display error message from backend
+        toast.error("Signin successful!", error.response.data.message);
       } else {
         console.error("Signin error", error);
-        alert("An error occurred during signin");
+        toast.error("Signin successful!", error);
       }
     }
   };

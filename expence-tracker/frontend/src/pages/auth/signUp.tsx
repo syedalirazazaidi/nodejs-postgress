@@ -5,6 +5,8 @@ import { SignUpFormValues, signUpSchema } from "@/validation/signUpSchema";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import useAuthStore from "@/store/authStore";
+import toast, { Toaster } from "react-hot-toast";
+import "react-toastify/dist/ReactToastify.css";
 
 // const fetchData = async () => {
 //   const { data } = await axios.get('https://jsonplaceholder.typicode.com/todos/1');
@@ -39,13 +41,13 @@ const SignUp: React.FC = () => {
       const response = await axios.post("/api/signup", signUpdata); // No need for full URL
       console.log(response.data);
 
-      alert("Signup successful");
+      toast.success("Signup successful!");
     } catch (error: any) {
       if (error.response && error.response.status === 400) {
-        alert(error.response.data.message); // Display error message from backend
+        toast.error("Signup fail!", error.response.data);
       } else {
         console.error("Signup error", error);
-        alert("An error occurred during signup");
+        toast.error("An error occurred during signup", error);
       }
     }
   };

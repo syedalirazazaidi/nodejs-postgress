@@ -15,6 +15,9 @@ import Dashboard from "./pages/dashboard";
 import Setting from "./pages/setting";
 import useAuthStore from "./store/authStore";
 import { isAuthenticated_token } from "./lib/isAuthenticated";
+import { ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+import { Toaster } from 'react-hot-toast';
 
 const PrivateRoute: React.FC = () => {
   // Access the authentication state from Zustand
@@ -46,6 +49,7 @@ function App() {
         {/* Catch-all route for 404 Not Found */}
         <Route path="*" element={<Navigate to="/signin" />} />
       </Routes>
+      <Toaster />
     </>
   );
 }
