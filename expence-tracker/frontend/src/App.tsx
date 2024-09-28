@@ -14,13 +14,14 @@ import Overview from "./pages/overview";
 import Dashboard from "./pages/dashboard";
 import Setting from "./pages/setting";
 import useAuthStore from "./store/authStore";
+import { isAuthenticated_token } from "./lib/isAuthenticated";
 
 const PrivateRoute: React.FC = () => {
   // Access the authentication state from Zustand
   const { isAuthenticated } = useAuthStore();
-  
+
   // If not authenticated, redirect to sign-in page
-  return isAuthenticated ? <Outlet /> : <Navigate to="/signIn" />;
+  return isAuthenticated_token() ? <Outlet /> : <Navigate to="/signIn" />;
 };
 function App() {
   const [count, setCount] = useState(0);

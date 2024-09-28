@@ -34,7 +34,6 @@ const SignUp: React.FC = () => {
       email: data.email,
       password: data.password,
     };
-    console.log(signUpdata);
 
     try {
       const response = await axios.post("/api/signup", signUpdata); // No need for full URL

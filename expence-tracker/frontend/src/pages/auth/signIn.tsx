@@ -1,10 +1,12 @@
-import React from "react";
 import { useForm, Controller } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { SignInFormValues, signInSchema } from "@/validation/signInSchema";
 import axios from "axios";
+import { useNavigate } from "react-router-dom";
 
 export default function SignIn() {
+  const navigate = useNavigate();
+
   const {
     control,
     handleSubmit,
@@ -14,20 +16,15 @@ export default function SignIn() {
   });
 
   const onSubmit = async (data: SignInFormValues) => {
-    console.log(data, "DATA");
-
     try {
-      const response = await axios.post(
-        "http://localhost:3000/api/signin",
-        data
-      );
+      const response = await axios.post("/api/signin", data);
 
       console.log(response);
 
       alert("Signin successful");
-      // Store the token in localStorage or context if needed
       localStorage.setItem("token", response.data.token);
-      // Redirect or perform actions after successful sign-in
+      localStorage.setItem("user", response.data.user.email);
+      navigate("/overview");
     } catch (error: any) {
       if (error.response && error.response.status === 400) {
         alert(error.response.data.message); // Display error message from backend
