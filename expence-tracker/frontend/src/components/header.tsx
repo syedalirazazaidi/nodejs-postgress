@@ -1,4 +1,4 @@
-import React from "react";
+import React,{useEffect,useState} from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { CircleUser, Landmark, Menu, Search } from "lucide-react";
 import { Button } from "@/components/ui/button";
@@ -17,7 +17,16 @@ import toast, { Toaster } from "react-hot-toast";
 import "react-toastify/dist/ReactToastify.css";
 export function Header() {
   const navigate = useNavigate();
+  const [userEmail, setUserEmail] = useState<string|null>(null); // State to store user email
 
+  useEffect(() => {
+    const storedToken = localStorage.getItem("token"); // Retrieve token
+    const storedUserEmail = localStorage.getItem("user"); // Retrieve user email
+
+    if (storedToken && storedUserEmail) {
+      setUserEmail(storedUserEmail); // Set user email in state
+    } 
+  }, []);
   const logout = () => {
     localStorage.removeItem("token");
     localStorage.removeItem("user");
@@ -127,7 +136,7 @@ export function Header() {
               </Button>
             </DropdownMenuTrigger>
             <DropdownMenuContent align="end">
-              <DropdownMenuLabel>My Account</DropdownMenuLabel>
+              <DropdownMenuLabel>{userEmail}</DropdownMenuLabel>
               <DropdownMenuSeparator />
               <DropdownMenuSeparator />
               <DropdownMenuItem onClick={logout}>Logout</DropdownMenuItem>
