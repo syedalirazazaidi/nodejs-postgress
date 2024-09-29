@@ -1,11 +1,16 @@
 import { useForm, Controller } from "react-hook-form";
+import React, { useState } from "react";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { SignInFormValues, signInSchema } from "@/validation/signInSchema";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import toast, { Toaster } from "react-hot-toast";
 import "react-toastify/dist/ReactToastify.css";
+import { Button } from "@/components/ui/button";
+import { Loader } from "lucide-react";
 export default function SignIn() {
+  const [loading, setLoading] = useState(false);
+
   const navigate = useNavigate();
 
   const {
@@ -17,6 +22,8 @@ export default function SignIn() {
   });
 
   const onSubmit = async (data: SignInFormValues) => {
+    setLoading(true);
+
     try {
       const response = await axios.post("/api/signin", data);
 
@@ -27,11 +34,13 @@ export default function SignIn() {
       navigate("/overview");
     } catch (error: any) {
       if (error.response && error.response.status === 400) {
-        toast.error("Signin successful!", error.response.data.message);
+        toast.error("Signin fail!", error.response.data.message);
       } else {
         console.error("Signin error", error);
-        toast.error("Signin successful!", error);
+        toast.error("Signin fail!", error);
       }
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -122,12 +131,20 @@ export default function SignIn() {
                     Forgot password?
                   </a>
                 </div>
-                <button
+                <Button
+                  disabled={loading}
                   type="submit"
-                  className="w-full bg-slate-200 text-[#111827] bg-primary-600 hover:bg-primary-700 focus:ring-4 focus:outline-none focus:ring-primary-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-primary-600 dark:hover:bg-primary-700 dark:focus:ring-primary-800"
+                  className="w-full bg-slate-300 text-[#111827]  hover:bg-primary-700 focus:ring-4 focus:outline-none focus:ring-primary-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-primary-600 dark:hover:bg-primary-700 dark:focus:ring-primary-800"
                 >
-                  Sign in
-                </button>
+                  {loading ? (
+                    <>
+                      <Loader className="mr-2 h-4 w-4 animate-spin" />
+                      Signing in...
+                    </>
+                  ) : (
+                    "Sign in"
+                  )}
+                </Button>
                 <p className="text-sm font-light text-gray-500 dark:text-gray-400">
                   Don’t have an account yet?{" "}
                   <a

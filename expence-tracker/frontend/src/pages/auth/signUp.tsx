@@ -1,18 +1,22 @@
-import React from "react";
+import React, { useState } from "react";
 import { useForm, Controller } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { SignUpFormValues, signUpSchema } from "@/validation/signUpSchema";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import useAuthStore from "@/store/authStore";
+import { Loader } from "lucide-react";
+
 import toast, { Toaster } from "react-hot-toast";
 import "react-toastify/dist/ReactToastify.css";
+import { Button } from "@/components/ui/button";
 
 // const fetchData = async () => {
 //   const { data } = await axios.get('https://jsonplaceholder.typicode.com/todos/1');
 //   return data;
 // };
 const SignUp: React.FC = () => {
+  const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
   // const { isAuthenticated, login } = useAuthStore();
   // const { data, error, isLoading } = useQuery({
@@ -32,6 +36,7 @@ const SignUp: React.FC = () => {
   });
 
   const onSubmit = async (data: SignUpFormValues) => {
+    setLoading(true);
     const signUpdata = {
       email: data.email,
       password: data.password,
@@ -49,6 +54,8 @@ const SignUp: React.FC = () => {
         console.error("Signup error", error);
         toast.error("An error occurred during signup", error);
       }
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -152,12 +159,20 @@ const SignUp: React.FC = () => {
                 )}
               </div>
 
-              <button
+              <Button
+                disabled={loading}
                 type="submit"
-                className="w-full bg-slate-200 text-[#111827] bg-primary-600 hover:bg-primary-700 focus:ring-4 focus:outline-none focus:ring-primary-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-primary-600 dark:hover:bg-primary-700 dark:focus:ring-primary-800"
+                className="w-full bg-slate-300 text-[#111827]  hover:bg-primary-700 focus:ring-4 focus:outline-none focus:ring-primary-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-primary-600 dark:hover:bg-primary-700 dark:focus:ring-primary-800"
               >
-                Sign up
-              </button>
+                {loading ? (
+                  <>
+                    <Loader className="mr-2 h-4 w-4 animate-spin" />
+                    Signing up...
+                  </>
+                ) : (
+                  "Sign up"
+                )}
+              </Button>
 
               <p className="text-sm font-light text-gray-500 dark:text-gray-400">
                 Already have an account?{" "}
