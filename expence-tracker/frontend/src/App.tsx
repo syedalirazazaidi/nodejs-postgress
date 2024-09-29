@@ -15,9 +15,10 @@ import Dashboard from "./pages/dashboard";
 import Setting from "./pages/setting";
 import useAuthStore from "./store/authStore";
 import { isAuthenticated_token } from "./lib/isAuthenticated";
-import { ToastContainer } from 'react-toastify';
-import 'react-toastify/dist/ReactToastify.css';
-import { Toaster } from 'react-hot-toast';
+import { ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+import { Toaster } from "react-hot-toast";
+import Account from "./pages/account";
 
 const PrivateRoute: React.FC = () => {
   // Access the authentication state from Zustand
@@ -40,6 +41,8 @@ function App() {
         <Route element={<PrivateRoute />}>
           <Route path="/overview" element={<Dashboard />} />
           <Route path="/transactions" element={<Transactions />} />
+          <Route path="/account" element={<Account />} />
+
           <Route path="/setting" element={<Setting />} />
 
           {/* Redirect root to /overview if authenticated */}
