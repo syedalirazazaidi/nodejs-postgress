@@ -67,7 +67,7 @@ export default function Dashboard() {
           </Card>
         </div>
       </main>
-      <div className="flex ">
+      <div className="flex flex-wrap md:flex-nowrap md:gap-1 ">
         <TransactionGraph />
         <Transactionpie />
       </div>

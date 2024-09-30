@@ -42,7 +42,7 @@ const chartConfig = {
 
 export function TransactionGraph() {
   return (
-    <Card className="w-[600px] mx-8">
+    <Card className="w-[595px] mx-8">
       <CardHeader>
         <CardTitle>Bar Chart - Multiple</CardTitle>
         <CardDescription>January - June 2024</CardDescription>

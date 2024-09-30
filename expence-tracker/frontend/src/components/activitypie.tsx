@@ -61,7 +61,7 @@ export function Transactionpie() {
   }, [])
 
   return (
-    <Card className="w-[600px] mx-8">
+    <Card className="w-[595px] mx-8">
       <CardHeader className="items-center pb-0">
         <CardTitle>Pie Chart - Donut with Text</CardTitle>
         <CardDescription>January - June 2024</CardDescription>
